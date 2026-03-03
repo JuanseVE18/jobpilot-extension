@@ -1,0 +1,167 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f5f7fa;
+  width: 380px;
+}
+
+.panel {
+  padding: 16px;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.logo {
+  width: 42px;
+  height: 42px;
+  margin-bottom: 8px;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #2563eb;
+}
+
+.app-subtitle {
+  font-size: 12px;
+  color: #555;
+  margin-top: 4px;
+}
+
+/* Blue minimalistic cards */
+.section-block {
+  background: #f0f6ff;
+  padding: 14px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #dbeafe;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.05);
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.section-head h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.section-head button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.section-head button:hover {
+  background: #1d4ed8;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.field span {
+  margin-bottom: 4px;
+  color: #475569;
+}
+
+/* Clean inputs */
+input,
+textarea {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #c7d7fe;
+  background: #ffffff;
+  font-size: 12px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+}
+
+/* PERFECT DATE ALIGNMENT */
+.grid.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+/* Ensures date fields fill full column */
+.field input[type="date"] {
+  width: 100%;
+}
+
+.repeat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+#save {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+#save:hover {
+  background: #059669;
+}
+
+#fill {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+#fill:hover {
+  background: #1d4ed8;
+}
+
+#status {
+  font-size: 12px;
+  text-align: center;
+  margin-top: 10px;
+  color: #334155;
+}
+
+#status.error {
+  color: #dc2626;
+}

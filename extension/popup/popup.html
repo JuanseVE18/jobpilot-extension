@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobPilot</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main class="panel">
+
+    <div class="app-header">
+      <img src="../icons/icon48.png" class="logo" />
+      <h1 class="app-title">JobPilot</h1>
+      <div class="app-subtitle">
+        Intelligent profile engine for effortless, high-impact job applications
+      </div>
+    </div>
+
+    <form id="profile-form" novalidate>
+
+      <!-- PERSONAL -->
+      <section class="section-block">
+        <div class="section-head"><h2>Personal</h2></div>
+        <div class="grid two-col">
+          <label class="field">
+            <span>First Name</span>
+            <input id="firstName" type="text">
+          </label>
+
+          <label class="field">
+            <span>Last Name</span>
+            <input id="lastName" type="text">
+          </label>
+
+          <label class="field">
+            <span>Email</span>
+            <input id="email" type="email">
+          </label>
+
+          <label class="field">
+            <span>Phone</span>
+            <input id="phone" type="tel">
+          </label>
+
+          <label class="field">
+            <span>LinkedIn</span>
+            <input id="linkedin" type="url">
+          </label>
+        </div>
+      </section>
+
+      <!-- SUMMARY -->
+      <section class="section-block">
+        <div class="section-head"><h2>Summary</h2></div>
+        <label class="field">
+          <textarea id="summary" rows="4"></textarea>
+        </label>
+      </section>
+
+      <!-- EXPERIENCE -->
+      <section class="section-block">
+        <div class="section-head">
+          <h2>Experience</h2>
+          <button type="button" data-action="add" data-section="experience">
+            + Add Experience
+          </button>
+        </div>
+        <div id="experience-list" class="repeat-list"></div>
+      </section>
+
+      <!-- PROJECTS -->
+      <section class="section-block">
+        <div class="section-head">
+          <h2>Projects</h2>
+          <button type="button" data-action="add" data-section="projects">
+            + Add Project
+          </button>
+        </div>
+        <div id="projects-list" class="repeat-list"></div>
+      </section>
+
+      <!-- EDUCATION -->
+      <section class="section-block">
+        <div class="section-head">
+          <h2>Education</h2>
+          <button type="button" data-action="add" data-section="education">
+            + Add Education
+          </button>
+        </div>
+        <div id="education-list" class="repeat-list"></div>
+      </section>
+
+      <!-- ORGANIZATIONS -->
+      <section class="section-block">
+        <div class="section-head">
+          <h2>Organizations</h2>
+          <button type="button" data-action="add" data-section="organizations">
+            + Add Organization
+          </button>
+        </div>
+        <div id="organizations-list" class="repeat-list"></div>
+      </section>
+
+      <!-- SKILLS -->
+      <section class="section-block">
+        <div class="section-head"><h2>Skills</h2></div>
+        <label class="field">
+          <textarea id="skills" rows="2" placeholder="Comma separated"></textarea>
+        </label>
+      </section>
+
+      <!-- CERTIFICATIONS -->
+      <section class="section-block">
+        <div class="section-head"><h2>Certifications</h2></div>
+        <label class="field">
+          <textarea id="certifications" rows="2" placeholder="Comma separated"></textarea>
+        </label>
+      </section>
+
+      <!-- LANGUAGES -->
+      <section class="section-block">
+        <div class="section-head"><h2>Languages</h2></div>
+        <label class="field">
+          <textarea id="languages" rows="2" placeholder="Comma separated"></textarea>
+        </label>
+      </section>
+
+      <div class="actions">
+        <button id="save" type="button">Save Profile</button>
+        <button id="fill" type="button">Autofill Page</button>
+      </div>
+
+    </form>
+
+    <p id="status"></p>
+  </main>
+
+  <script src="popup.js"></script>
+</body>
+</html>

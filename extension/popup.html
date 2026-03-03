@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApplySmart</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="panel">
+    <header class="panel-header">
+      <h1>ApplySmart</h1>
+      <p>Structured profile autofill for real-world job applications.</p>
+    </header>
+
+    <form id="profile-form" novalidate>
+      <section class="section-block">
+        <h2>Personal</h2>
+        <div class="grid two-col">
+          <label class="field"><span>First Name</span><input id="firstName" type="text" autocomplete="given-name"></label>
+          <label class="field"><span>Last Name</span><input id="lastName" type="text" autocomplete="family-name"></label>
+          <label class="field"><span>Email</span><input id="email" type="email" autocomplete="email"></label>
+          <label class="field"><span>Phone</span><input id="phone" type="tel" autocomplete="tel"></label>
+          <label class="field"><span>LinkedIn</span><input id="linkedin" type="url"></label>
+          <label class="field"><span>Address</span><input id="address" type="text" autocomplete="street-address"></label>
+          <label class="field"><span>City</span><input id="city" type="text" autocomplete="address-level2"></label>
+          <label class="field"><span>State</span><input id="state" type="text" autocomplete="address-level1"></label>
+          <label class="field"><span>ZIP</span><input id="zip" type="text" autocomplete="postal-code"></label>
+        </div>
+      </section>
+
+      <section class="section-block">
+        <h2>Summary</h2>
+        <label class="field"><span>Professional Summary</span><textarea id="summary" rows="4"></textarea></label>
+      </section>
+
+      <section class="section-block">
+        <div class="section-head">
+          <h2>Experience</h2>
+          <button class="ghost" type="button" data-action="add" data-section="experience">+ Add Experience</button>
+        </div>
+        <div id="experience-list" class="repeat-list"></div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-head">
+          <h2>Projects</h2>
+          <button class="ghost" type="button" data-action="add" data-section="projects">+ Add Project</button>
+        </div>
+        <div id="projects-list" class="repeat-list"></div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-head">
+          <h2>Education</h2>
+          <button class="ghost" type="button" data-action="add" data-section="education">+ Add Education</button>
+        </div>
+        <div id="education-list" class="repeat-list"></div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-head">
+          <h2>Organizations</h2>
+          <button class="ghost" type="button" data-action="add" data-section="organizations">+ Add Organization</button>
+        </div>
+        <div id="organizations-list" class="repeat-list"></div>
+      </section>
+
+      <section class="section-block">
+        <h2>Lists</h2>
+        <label class="field"><span>Skills (comma separated)</span><textarea id="skills" rows="2"></textarea></label>
+        <label class="field"><span>Certifications (comma separated)</span><textarea id="certifications" rows="2"></textarea></label>
+        <label class="field"><span>Languages (comma separated)</span><textarea id="languages" rows="2"></textarea></label>
+      </section>
+
+      <label class="toggle" for="high-confidence-only">
+        <input id="high-confidence-only" type="checkbox">
+        <span>Autofill high-confidence fields only</span>
+      </label>
+
+      <div class="actions sticky-actions">
+        <button id="save" type="button">Save Profile</button>
+        <button id="fill" type="button">Autofill Page</button>
+      </div>
+    </form>
+
+    <p id="status" aria-live="polite"></p>
+  </main>
+
+  <script src="popup.js"></script>
+</body>
+</html>
