@@ -1,10 +1,12 @@
-# 🚀 JobPilot – Smart Job Application Autofill Extension
+# 🚀 JobPilot – Chrome Extension for Intelligent Job Application Autofill
 
-## 📸 Demo
+<p align="center">
+  <img src="assets/demo.png" width="420"/>
+</p>
 
-![JobPilot Demo](assets/demo.png)
+JobPilot is a Chrome Extension that helps users autofill job applications quickly using a structured professional profile.
 
-JobPilot is a Chrome Extension that helps users autofill job applications quickly using a saved professional profile.
+---
 
 ## ✨ Features
 
@@ -14,6 +16,8 @@ JobPilot is a Chrome Extension that helps users autofill job applications quickl
 - Clean and minimal user interface
 - Data stored securely using Chrome local storage
 
+---
+
 ## 🛠 Tech Stack
 
 - JavaScript (Vanilla)
@@ -21,6 +25,8 @@ JobPilot is a Chrome Extension that helps users autofill job applications quickl
 - HTML5
 - CSS3
 - Chrome Storage API
+
+---
 
 ## 📂 Project Structure
 
@@ -34,13 +40,17 @@ extension/
 ├── manifest.json   # Chrome extension configuration
 ```
 
+---
+
 ## 🚀 How to Install Locally
 
-1. Clone the repository
-2. Open Chrome and go to `chrome://extensions/`
-3. Enable "Developer Mode"
-4. Click "Load unpacked"
-5. Select the `extension` folder
+1. Clone the repository  
+2. Open Chrome and go to `chrome://extensions/`  
+3. Enable **Developer Mode**  
+4. Click **Load unpacked**  
+5. Select the `extension` folder  
+
+---
 
 ## 📌 Future Improvements
 
@@ -48,6 +58,8 @@ extension/
 - Resume import support
 - AI-powered job matching
 - Chrome Web Store publication
+
+---
 
 ## 👤 Author
 
