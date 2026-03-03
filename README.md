@@ -1,5 +1,9 @@
 # 🚀 JobPilot – Smart Job Application Autofill Extension
 
+## 📸 Demo
+
+![JobPilot Demo](assets/demo.png)
+
 JobPilot is a Chrome Extension that helps users autofill job applications quickly using a saved professional profile.
 
 ## ✨ Features
