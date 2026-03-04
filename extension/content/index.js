@@ -138,9 +138,6 @@
   });
 
   const flattenProfile = (profile) => {
-    const firstExp = profile.experience?.[0] || {};
-    const firstEdu = profile.education?.[0] || {};
-
     return {
       firstName: profile.personal.firstName,
       lastName: profile.personal.lastName,
@@ -152,14 +149,14 @@
       certifications: profile.certifications.join(", "),
       languages: profile.languages.join(", "),
 
-      jobTitle: firstExp.title || "",
-      company: firstExp.company || "",
-      startDate: firstExp.startDate || "",
-      endDate: firstExp.endDate || "",
+      jobTitle: profile.experience.map(exp => exp.title || ""),
+      company: profile.experience.map(exp => exp.company || ""),
+      startDate: profile.experience.map(exp => exp.startDate || ""),
+      endDate: profile.experience.map(exp => exp.endDate || ""),
 
-      school: firstEdu.school || "",
-      degree: firstEdu.degree || "",
-      fieldOfStudy: firstEdu.fieldOfStudy || ""
+      school: profile.education.map(edu => edu.school || ""),
+      degree: profile.education.map(edu => edu.degree || ""),
+      fieldOfStudy: profile.education.map(edu => edu.fieldOfStudy || "")
     };
   };
 
@@ -311,6 +308,16 @@
     const profile = normalizeProfile(data[PROFILE_KEY] || {});
     const values = flattenProfile(profile);
 
+    const sectionCounters = {
+      jobTitle: 0,
+      company: 0,
+      startDate: 0,
+      endDate: 0,
+      school: 0,
+      degree: 0,
+      fieldOfStudy: 0
+    };
+
     const fields = Array.from(document.querySelectorAll("input, textarea, select"));
 
     let filled = 0;
@@ -330,7 +337,14 @@
         return;
       }
 
-      const value = values[best.key];
+      let value = values[best.key];
+
+      if (Array.isArray(value)) {
+        const index = sectionCounters[best.key] || 0;
+        value = value[index] || "";
+        sectionCounters[best.key] = index + 1;
+      }
+
       if (!nonEmpty(value)) {
         skipped += 1;
         return;
