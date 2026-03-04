@@ -255,6 +255,25 @@
     element.dispatchEvent(new Event("change", { bubbles: true }));
   };
 
+  const formatDateForInput = (value, element) => {
+    if (!value) return "";
+
+    const type = element.type;
+
+    // If already proper date input (YYYY-MM or YYYY-MM-DD), return directly
+    if (type === "date" || type === "month") {
+      return value;
+    }
+
+    // Convert YYYY-MM to MM/YYYY if needed
+    if (/^\d{4}-\d{2}$/.test(value)) {
+      const [year, month] = value.split("-");
+      return `${month}/${year}`;
+    }
+
+    return value;
+  };
+
   const applyValue = (element, value) => {
     if (!nonEmpty(value)) {
       return false;
@@ -263,7 +282,8 @@
     if (element instanceof HTMLSelectElement) {
       const desired = normalizeCompact(value);
       const option = Array.from(element.options).find((opt) =>
-        normalizeCompact(opt.value) === desired || normalizeCompact(opt.textContent) === desired
+        normalizeCompact(opt.value) === desired ||
+        normalizeCompact(opt.textContent) === desired
       );
 
       if (!option || element.value === option.value) {
@@ -275,11 +295,13 @@
       return true;
     }
 
-    if (element.value === value) {
+    const formattedValue = formatDateForInput(value, element);
+
+    if (element.value === formattedValue) {
       return false;
     }
 
-    element.value = value;
+    element.value = formattedValue;
     dispatchFieldEvents(element);
     return true;
   };
