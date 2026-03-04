@@ -1,4 +1,3 @@
-
 (() => {
   const STORAGE_KEYS = {
     profile: "profile",
@@ -59,7 +58,6 @@
     };
   };
 
-  // IMPROVED FIELD MAP (more aggressive + tolerant)
   const FIELD_DEFINITIONS = {
     firstName: {
       tokens: ["first_name", "firstname", "fname"],
@@ -88,32 +86,74 @@
       weak: ["phone", "contact"],
       types: ["tel", "text"],
       value: (p) => p.personal.phone
+    },
+    linkedin: {
+      tokens: ["linkedin", "linkedin_url"],
+      strong: ["linkedin profile"],
+      weak: ["linkedin"],
+      types: ["url", "text"],
+      value: (p) => p.personal.linkedin
+    },
+    address: {
+      tokens: ["address", "street", "address_line"],
+      strong: ["street address"],
+      weak: ["address", "street"],
+      types: ["text", "textarea"],
+      value: (p) => p.personal.address
+    },
+    city: {
+      tokens: ["city", "town"],
+      strong: ["city"],
+      weak: ["city"],
+      types: ["text"],
+      value: (p) => p.personal.city
+    },
+    state: {
+      tokens: ["state", "province"],
+      strong: ["state", "province"],
+      weak: ["state"],
+      types: ["text", "select-one"],
+      value: (p) => p.personal.state
+    },
+    zip: {
+      tokens: ["zip", "postal", "postal_code"],
+      strong: ["zip code", "postal code"],
+      weak: ["zip", "postal"],
+      types: ["text"],
+      value: (p) => p.personal.zip
+    },
+    summary: {
+      tokens: ["summary", "about", "professional_summary"],
+      strong: ["professional summary", "about you"],
+      weak: ["summary"],
+      types: ["textarea", "text"],
+      value: (p) => p.summary
+    },
+    skills: {
+      tokens: ["skills", "skill_set"],
+      strong: ["technical skills"],
+      weak: ["skills"],
+      types: ["textarea", "text"],
+      value: (p) => (Array.isArray(p.skills) ? p.skills.join(", ") : "")
     }
   };
 
   const scoreField = (def, meta) => {
     const descriptor = `${meta.name} ${meta.id}`;
     let score = 0;
-
     score += countHits(descriptor, def.tokens, 7);
     score += countHits(meta.haystack, def.strong, 4);
     score += countHits(meta.haystack, def.weak, 2);
-
     if (def.types.includes(meta.type)) score += 3;
-
     return score;
   };
 
   const chooseBestDefinition = (meta) => {
     let best = null;
-
     Object.values(FIELD_DEFINITIONS).forEach((def) => {
       const score = scoreField(def, meta);
-      if (!best || score > best.score) {
-        best = { def, score };
-      }
+      if (!best || score > best.score) best = { def, score };
     });
-
     return best;
   };
 
@@ -127,9 +167,7 @@
   };
 
   const hasUserValue = (el) => {
-    if (el instanceof HTMLInputElement && ["checkbox", "radio"].includes(normalize(el.type))) {
-      return el.checked;
-    }
+    if (el instanceof HTMLInputElement && ["checkbox", "radio"].includes(normalize(el.type))) return el.checked;
     return Boolean((el.value || "").trim());
   };
 
@@ -144,9 +182,7 @@
     if (el instanceof HTMLSelectElement) {
       const desired = normalizeCompact(value);
       const option = Array.from(el.options).find(
-        (o) =>
-          normalizeCompact(o.value) === desired ||
-          normalizeCompact(o.textContent) === desired
+        (o) => normalizeCompact(o.value) === desired || normalizeCompact(o.textContent) === desired
       );
       if (!option) return false;
       el.value = option.value;
@@ -155,7 +191,6 @@
     }
 
     if (el.value === value) return false;
-
     el.value = value;
     emitEvents(el);
     return true;
@@ -167,8 +202,15 @@
       firstName: "",
       lastName: "",
       email: "",
-      phone: ""
-    }
+      phone: "",
+      linkedin: "",
+      address: "",
+      city: "",
+      state: "",
+      zip: ""
+    },
+    summary: "",
+    skills: []
   });
 
   const normalizeProfile = (profile) => {
@@ -185,14 +227,9 @@
     const storage = await chrome.storage.local.get([STORAGE_KEYS.profile]);
     const profile = normalizeProfile(storage.profile);
 
-    const threshold = profile.settings.highConfidenceOnly
-      ? HIGH_CONFIDENCE_THRESHOLD
-      : BASE_THRESHOLD;
+    const threshold = profile.settings.highConfidenceOnly ? HIGH_CONFIDENCE_THRESHOLD : BASE_THRESHOLD;
 
-    const elements = Array.from(
-      document.querySelectorAll("input, textarea, select")
-    );
-
+    const elements = Array.from(document.querySelectorAll("input, textarea, select"));
     let filled = 0;
 
     elements.forEach((el) => {
@@ -212,14 +249,9 @@
       ranAt: new Date().toISOString()
     };
 
-    await chrome.storage.local.set({
-      [STORAGE_KEYS.lastRun]: summary
-    });
+    await chrome.storage.local.set({ [STORAGE_KEYS.lastRun]: summary });
 
-    chrome.runtime.sendMessage({
-      type: "APPLYSMART_AUTOFILL_RESULT",
-      payload: summary
-    });
+    chrome.runtime.sendMessage({ type: "APPLYSMART_AUTOFILL_RESULT", payload: summary });
 
     return summary;
   };
@@ -229,9 +261,7 @@
     return;
   }
 
-  window[ENGINE_KEY] = {
-    run: runAutofill
-  };
+  window[ENGINE_KEY] = { run: runAutofill };
 
   runAutofill();
 })();
