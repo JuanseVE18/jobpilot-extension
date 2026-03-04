@@ -14,7 +14,13 @@
     email: { tokens: ["email"], strong: ["email address"], weak: ["mail"], types: ["email", "text"], autocomplete: ["email"] },
     phone: { tokens: ["phone", "mobile"], strong: ["phone number"], weak: ["contact"], types: ["tel", "text"], autocomplete: ["tel"] },
     linkedin: { tokens: ["linkedin"], strong: ["linkedin profile"], weak: ["profile"], types: ["url", "text"], autocomplete: [] },
-    summary: { tokens: ["summary"], strong: ["professional summary"], weak: ["about"], types: ["textarea", "text"], autocomplete: [] },
+    summary: {
+      tokens: ["summary", "description", "role_description"],
+      strong: ["professional summary", "role description", "job description"],
+      weak: ["about", "description"],
+      types: ["textarea", "text"],
+      autocomplete: []
+    },
     skills: { tokens: ["skills"], strong: ["technical skills"], weak: ["skill"], types: ["text", "textarea"], autocomplete: [] },
     certifications: { tokens: ["certifications"], strong: ["certificates"], weak: ["cert"], types: ["text", "textarea"], autocomplete: [] },
     languages: { tokens: ["languages"], strong: ["spoken languages"], weak: ["language"], types: ["text", "textarea"], autocomplete: [] },
@@ -94,7 +100,8 @@
       company: firstExperience.company || "",
       location: firstExperience.location || "",
       startDate: firstExperience.startDate || "",
-      endDate: firstExperience.endDate || ""
+      endDate: firstExperience.endDate || "",
+      description: firstExperience.description || ""
     };
   };
 
