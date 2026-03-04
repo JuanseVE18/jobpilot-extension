@@ -69,6 +69,55 @@
       weak: ["language"],
       types: ["text", "textarea"],
       autocomplete: []
+    },
+    jobTitle: {
+      tokens: ["job_title", "title", "position"],
+      strong: ["job title", "position title"],
+      weak: ["title", "position"],
+      types: ["text"],
+      autocomplete: []
+    },
+    company: {
+      tokens: ["company", "employer"],
+      strong: ["company name", "employer"],
+      weak: ["company"],
+      types: ["text"],
+      autocomplete: []
+    },
+    startDate: {
+      tokens: ["start_date", "from_date"],
+      strong: ["start date", "from"],
+      weak: ["start"],
+      types: ["date", "text", "month"],
+      autocomplete: []
+    },
+    endDate: {
+      tokens: ["end_date", "to_date"],
+      strong: ["end date", "to"],
+      weak: ["end"],
+      types: ["date", "text", "month"],
+      autocomplete: []
+    },
+    school: {
+      tokens: ["school", "university", "college"],
+      strong: ["school name", "university"],
+      weak: ["school"],
+      types: ["text"],
+      autocomplete: []
+    },
+    degree: {
+      tokens: ["degree"],
+      strong: ["degree"],
+      weak: ["degree"],
+      types: ["text", "select-one"],
+      autocomplete: []
+    },
+    fieldOfStudy: {
+      tokens: ["field_of_study", "major"],
+      strong: ["field of study", "major"],
+      weak: ["field", "major"],
+      types: ["text"],
+      autocomplete: []
     }
   };
 
@@ -83,20 +132,36 @@
     summary: raw.summary || "",
     skills: Array.isArray(raw.skills) ? raw.skills : [],
     certifications: Array.isArray(raw.certifications) ? raw.certifications : [],
-    languages: Array.isArray(raw.languages) ? raw.languages : []
+    languages: Array.isArray(raw.languages) ? raw.languages : [],
+    experience: Array.isArray(raw.experience) ? raw.experience : [],
+    education: Array.isArray(raw.education) ? raw.education : []
   });
 
-  const flattenProfile = (profile) => ({
-    firstName: profile.personal.firstName,
-    lastName: profile.personal.lastName,
-    email: profile.personal.email,
-    phone: profile.personal.phone,
-    linkedin: profile.personal.linkedin,
-    summary: profile.summary,
-    skills: profile.skills.join(", "),
-    certifications: profile.certifications.join(", "),
-    languages: profile.languages.join(", ")
-  });
+  const flattenProfile = (profile) => {
+    const firstExp = profile.experience?.[0] || {};
+    const firstEdu = profile.education?.[0] || {};
+
+    return {
+      firstName: profile.personal.firstName,
+      lastName: profile.personal.lastName,
+      email: profile.personal.email,
+      phone: profile.personal.phone,
+      linkedin: profile.personal.linkedin,
+      summary: profile.summary,
+      skills: profile.skills.join(", "),
+      certifications: profile.certifications.join(", "),
+      languages: profile.languages.join(", "),
+
+      jobTitle: firstExp.title || "",
+      company: firstExp.company || "",
+      startDate: firstExp.startDate || "",
+      endDate: firstExp.endDate || "",
+
+      school: firstEdu.school || "",
+      degree: firstEdu.degree || "",
+      fieldOfStudy: firstEdu.fieldOfStudy || ""
+    };
+  };
 
   const getFieldMeta = (element) => {
     const name = normalizeCompact(element.getAttribute("name"));
