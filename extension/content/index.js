@@ -17,7 +17,47 @@
     summary: { tokens: ["summary"], strong: ["professional summary"], weak: ["about"], types: ["textarea", "text"], autocomplete: [] },
     skills: { tokens: ["skills"], strong: ["technical skills"], weak: ["skill"], types: ["text", "textarea"], autocomplete: [] },
     certifications: { tokens: ["certifications"], strong: ["certificates"], weak: ["cert"], types: ["text", "textarea"], autocomplete: [] },
-    languages: { tokens: ["languages"], strong: ["spoken languages"], weak: ["language"], types: ["text", "textarea"], autocomplete: [] }
+    languages: { tokens: ["languages"], strong: ["spoken languages"], weak: ["language"], types: ["text", "textarea"], autocomplete: [] },
+
+    jobTitle: {
+      tokens: ["job_title", "title", "position"],
+      strong: ["job title", "position title"],
+      weak: ["title"],
+      types: ["text"],
+      autocomplete: []
+    },
+
+    company: {
+      tokens: ["company", "employer"],
+      strong: ["company name", "employer"],
+      weak: ["company"],
+      types: ["text"],
+      autocomplete: []
+    },
+
+    location: {
+      tokens: ["location", "city"],
+      strong: ["job location"],
+      weak: ["location"],
+      types: ["text"],
+      autocomplete: []
+    },
+
+    startDate: {
+      tokens: ["start_date", "from"],
+      strong: ["start date"],
+      weak: ["start"],
+      types: ["date", "month", "text"],
+      autocomplete: []
+    },
+
+    endDate: {
+      tokens: ["end_date", "to"],
+      strong: ["end date"],
+      weak: ["end"],
+      types: ["date", "month", "text"],
+      autocomplete: []
+    }
   };
 
   /* ---------------- PROFILE NORMALIZATION ---------------- */
@@ -33,20 +73,30 @@
     summary: raw.summary || "",
     skills: Array.isArray(raw.skills) ? raw.skills : [],
     certifications: Array.isArray(raw.certifications) ? raw.certifications : [],
-    languages: Array.isArray(raw.languages) ? raw.languages : []
+    languages: Array.isArray(raw.languages) ? raw.languages : [],
+    experience: Array.isArray(raw.experience) ? raw.experience : []
   });
 
-  const flattenProfile = (profile) => ({
-    firstName: profile.personal.firstName,
-    lastName: profile.personal.lastName,
-    email: profile.personal.email,
-    phone: profile.personal.phone,
-    linkedin: profile.personal.linkedin,
-    summary: profile.summary,
-    skills: profile.skills.join(", "),
-    certifications: profile.certifications.join(", "),
-    languages: profile.languages.join(", ")
-  });
+  const flattenProfile = (profile) => {
+    const firstExperience = profile.experience?.[0] || {};
+
+    return {
+      firstName: profile.personal.firstName,
+      lastName: profile.personal.lastName,
+      email: profile.personal.email,
+      phone: profile.personal.phone,
+      linkedin: profile.personal.linkedin,
+      summary: profile.summary,
+      skills: profile.skills.join(", "),
+      certifications: profile.certifications.join(", "),
+      languages: profile.languages.join(", "),
+      jobTitle: firstExperience.title || "",
+      company: firstExperience.company || "",
+      location: firstExperience.location || "",
+      startDate: firstExperience.startDate || "",
+      endDate: firstExperience.endDate || ""
+    };
+  };
 
   /* ---------------- FIELD META ---------------- */
 
