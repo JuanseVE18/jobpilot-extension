@@ -263,5 +263,32 @@
 
   window[ENGINE_KEY] = { run: runAutofill };
 
+  // Initial run
   runAutofill();
+
+  // ===============================
+  // Dynamic Form Observer
+  // ===============================
+
+  let observerTimeout = null;
+
+  const observer = new MutationObserver((mutations) => {
+    const hasNewNodes = mutations.some(
+      (m) => m.addedNodes && m.addedNodes.length > 0
+    );
+
+    if (!hasNewNodes) return;
+
+    if (observerTimeout) clearTimeout(observerTimeout);
+
+    observerTimeout = setTimeout(() => {
+      runAutofill();
+    }, 300);
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+
 })();
