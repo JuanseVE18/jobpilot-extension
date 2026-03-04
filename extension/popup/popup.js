@@ -233,6 +233,14 @@
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     if (!tab?.id) return;
 
+    // Prevent running on restricted Chrome pages
+    if (!tab.url ||
+        tab.url.startsWith("chrome://") ||
+        tab.url.startsWith("chrome-extension://")) {
+      setStatus("Cannot run on this page.", true);
+      return;
+    }
+
     await chrome.scripting.executeScript({
       target: { tabId: tab.id },
       files: ["content/index.js"]
