@@ -9,8 +9,20 @@
   /* ---------------- FIELD DEFINITIONS ---------------- */
 
   const FIELD_DEFINITIONS = {
-    firstName: { tokens: ["first_name", "firstname", "fname"], strong: ["first name"], weak: ["first"], types: ["text"], autocomplete: ["given-name"] },
-    lastName: { tokens: ["last_name", "lastname", "lname"], strong: ["last name", "surname"], weak: ["last"], types: ["text"], autocomplete: ["family-name"] },
+    firstName: {
+      tokens: ["first_name", "firstname", "first-name", "fname", "givenname", "given_name"],
+      strong: ["first name", "given name"],
+      weak: ["first"],
+      types: ["text"],
+      autocomplete: ["given-name"]
+    },
+    lastName: {
+      tokens: ["last_name", "lastname", "last-name", "lname", "surname", "familyname"],
+      strong: ["last name", "surname", "family name"],
+      weak: ["last"],
+      types: ["text"],
+      autocomplete: ["family-name"]
+    },
     email: { tokens: ["email"], strong: ["email address"], weak: ["mail"], types: ["email", "text"], autocomplete: ["email"] },
     phone: { tokens: ["phone", "mobile"], strong: ["phone number"], weak: ["contact"], types: ["tel", "text"], autocomplete: ["tel"] },
     linkedin: { tokens: ["linkedin"], strong: ["linkedin profile"], weak: ["profile"], types: ["url", "text"], autocomplete: [] },
