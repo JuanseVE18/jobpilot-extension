@@ -112,10 +112,13 @@
 
       <!-- CERTIFICATIONS -->
       <section class="section-block">
-        <div class="section-head"><h2>Certifications</h2></div>
-        <label class="field">
-          <textarea id="certifications" rows="2" placeholder="Comma separated"></textarea>
-        </label>
+        <div class="section-head">
+          <h2>Certifications</h2>
+          <button type="button" data-action="add" data-section="certifications">
+            + Add Certification
+          </button>
+        </div>
+        <div id="certifications-list" class="repeat-list"></div>
       </section>
 
       <!-- LANGUAGES -->

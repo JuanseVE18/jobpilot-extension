@@ -88,20 +88,31 @@
       }));
   };
 
-  const countHits = (source, tokens, weight) =>
-    tokens.reduce((score, token) => score + (source.includes(token) ? weight : 0), 0);
+  const countHits = (source, tokens, weight) => {
+    if (!source || !Array.isArray(tokens)) return 0;
+    const normalizedSource = normalizeCompact(source);
+    return tokens.reduce((score, token) => {
+      const normalizedToken = normalizeCompact(token);
+      return score + (normalizedSource.includes(normalizedToken) ? weight : 0);
+    }, 0);
+  };
 
   const scoreDefinition = (definition, meta) => {
-    const descriptor = `${meta.name} ${meta.id}`;
+    if (!definition || !meta) return 0;
+
+    const descriptor = normalizeCompact(`${meta.name} ${meta.id}`);
+    const haystack = normalizeCompact(meta.haystack || "");
+    const autoComplete = normalizeCompact(meta.autoComplete || "");
 
     let score = 0;
-    score += countHits(descriptor, definition.exactTokens, 7);
-    score += countHits(meta.haystack, definition.strongKeywords, 4);
-    score += countHits(meta.haystack, definition.weakKeywords, 2);
-    score += countHits(meta.autoComplete, definition.autocomplete, 8);
 
-    if (definition.types.includes(meta.type)) {
-      score += 3;
+    score += countHits(descriptor, definition.exactTokens, 8);
+    score += countHits(haystack, definition.strongKeywords, 5);
+    score += countHits(haystack, definition.weakKeywords, 2);
+    score += countHits(autoComplete, definition.autocomplete, 10);
+
+    if (Array.isArray(definition.types) && definition.types.includes(meta.type)) {
+      score += 4;
     }
 
     return score;

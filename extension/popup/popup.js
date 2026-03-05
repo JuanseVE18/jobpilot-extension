@@ -85,24 +85,6 @@
     state.skills = parseList(byId("skills")?.value);
     state.languages = parseList(byId("languages")?.value);
 
-    // --- FORCE rebuild certifications from DOM ---
-    const certInputs = document.querySelectorAll("[data-section='certifications']");
-    state.certifications = [];
-
-    certInputs.forEach(el => {
-      const index = Number(el.dataset.i);
-      const field = el.dataset.field;
-
-      if (!state.certifications[index]) {
-        state.certifications[index] = {};
-      }
-
-      state.certifications[index][field] = el.value;
-    });
-
-    // Clean undefined gaps (important)
-    state.certifications = state.certifications.filter(Boolean);
-
     await chrome.storage.local.set({ [PROFILE_KEY]: state });
 
     setStatus("Profile saved.");
@@ -256,6 +238,15 @@
     const index = Number(el.dataset.i);
 
     if (section && field !== undefined && !isNaN(index)) {
+
+      if (!state[section]) {
+        state[section] = [];
+      }
+
+      if (!state[section][index]) {
+        state[section][index] = {};
+      }
+
       state[section][index][field] = el.value;
     }
   });
