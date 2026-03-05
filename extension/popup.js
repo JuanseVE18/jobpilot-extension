@@ -346,7 +346,7 @@ const runAutofill = async () => {
 
     await chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      files: ["content.js"]
+      files: ["content/index.js"]
     });
 
     const data = await getStorage([STORAGE_KEYS.lastRun]);
