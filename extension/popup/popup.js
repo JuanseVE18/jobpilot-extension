@@ -52,9 +52,23 @@
 
   const loadProfile = async () => {
     const data = await chrome.storage.local.get([PROFILE_KEY]);
+
     if (data[PROFILE_KEY]) {
-      state = { ...state, ...data[PROFILE_KEY] };
+      const saved = data[PROFILE_KEY];
+
+      state = {
+        personal: saved.personal || state.personal,
+        summary: saved.summary || "",
+        experience: Array.isArray(saved.experience) ? saved.experience : [],
+        projects: Array.isArray(saved.projects) ? saved.projects : [],
+        education: Array.isArray(saved.education) ? saved.education : [],
+        organizations: Array.isArray(saved.organizations) ? saved.organizations : [],
+        skills: Array.isArray(saved.skills) ? saved.skills : [],
+        certifications: Array.isArray(saved.certifications) ? saved.certifications : [],
+        languages: Array.isArray(saved.languages) ? saved.languages : []
+      };
     }
+
     renderAll();
   };
 
