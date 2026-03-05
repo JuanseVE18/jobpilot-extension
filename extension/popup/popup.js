@@ -73,6 +73,8 @@
   };
 
   const saveProfile = async () => {
+
+    // --- Static fields ---
     state.personal.firstName = byId("firstName")?.value.trim() || "";
     state.personal.lastName = byId("lastName")?.value.trim() || "";
     state.personal.email = byId("email")?.value.trim() || "";
@@ -83,7 +85,26 @@
     state.skills = parseList(byId("skills")?.value);
     state.languages = parseList(byId("languages")?.value);
 
+    // --- FORCE rebuild certifications from DOM ---
+    const certInputs = document.querySelectorAll("[data-section='certifications']");
+    state.certifications = [];
+
+    certInputs.forEach(el => {
+      const index = Number(el.dataset.i);
+      const field = el.dataset.field;
+
+      if (!state.certifications[index]) {
+        state.certifications[index] = {};
+      }
+
+      state.certifications[index][field] = el.value;
+    });
+
+    // Clean undefined gaps (important)
+    state.certifications = state.certifications.filter(Boolean);
+
     await chrome.storage.local.set({ [PROFILE_KEY]: state });
+
     setStatus("Profile saved.");
   };
 
