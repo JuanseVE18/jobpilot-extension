@@ -107,13 +107,7 @@
       summary: profile.summary,
       skills: profile.skills.join(", "),
       certifications: profile.certifications.join(", "),
-      languages: profile.languages.join(", "),
-      jobTitle: firstExperience.title || "",
-      company: firstExperience.company || "",
-      location: firstExperience.location || "",
-      startDate: firstExperience.startDate || "",
-      endDate: firstExperience.endDate || "",
-      description: firstExperience.description || ""
+      languages: profile.languages.join(", ")
     };
   };
 
@@ -199,10 +193,69 @@
     element.dispatchEvent(new Event("change", { bubbles: true }));
   };
 
-  /* ---------------- HIGHLIGHT MODE ---------------- */
+  /* ---------------- SMART EXPERIENCE BLOCK DETECTION ---------------- */
 
+  const detectExperienceBlocks = () => {
+    const blocks = [];
 
-  /* ---------------- APPLY VALUE ---------------- */
+    const possibleGroups = document.querySelectorAll(
+      "fieldset, .experience, .work, .job, [class*='experience'], [class*='work'], [class*='employment']"
+    );
+
+    possibleGroups.forEach(group => {
+      const inputs = group.querySelectorAll("input, textarea");
+      if (inputs.length >= 2) {
+        blocks.push(group);
+      }
+    });
+
+    return blocks;
+  };
+
+  const fillExperienceBlocks = (profile) => {
+    if (!profile.experience || !profile.experience.length) return;
+
+    const blocks = detectExperienceBlocks();
+
+    blocks.forEach((block, index) => {
+      const exp = profile.experience[index];
+      if (!exp) return;
+
+      const fields = block.querySelectorAll("input, textarea");
+
+      fields.forEach(field => {
+        if (!isFillable(field) || hasUserValue(field)) return;
+
+        const name = (field.name || field.id || "").toLowerCase();
+
+        if (name.includes("title") && exp.title) {
+          applyValue(field, exp.title, 10);
+        }
+
+        if (name.includes("company") && exp.company) {
+          applyValue(field, exp.company, 10);
+        }
+
+        if (name.includes("location") && exp.location) {
+          applyValue(field, exp.location, 9);
+        }
+
+        if (name.includes("start") && exp.startDate) {
+          applyValue(field, exp.startDate, 8);
+        }
+
+        if (name.includes("end") && exp.endDate) {
+          applyValue(field, exp.endDate, 8);
+        }
+
+        if ((name.includes("description") || name.includes("responsibilities")) && exp.description) {
+          applyValue(field, exp.description, 7);
+        }
+      });
+    });
+  };
+
+  /* ---------------- MAIN AUTOFILL ---------------- */
 
   const applyValue = (element, value, confidence) => {
     if (!nonEmpty(value)) return false;
@@ -274,12 +327,12 @@
     return true;
   };
 
-  /* ---------------- MAIN AUTOFILL ---------------- */
-
   const runAutofill = async () => {
     const data = await chrome.storage.local.get([PROFILE_KEY]);
     const profile = normalizeProfile(data[PROFILE_KEY] || {});
     const values = flattenProfile(profile);
+
+    fillExperienceBlocks(profile);
 
     const fields = Array.from(
       document.querySelectorAll("input, textarea, select")
@@ -298,6 +351,11 @@
       const best = pickBestKey(meta);
 
       if (!best || best.score < 5) {
+        skipped++;
+        return;
+      }
+
+      if (["jobTitle", "company", "location", "startDate", "endDate", "description"].includes(best.key)) {
         skipped++;
         return;
       }
