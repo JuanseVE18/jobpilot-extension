@@ -328,6 +328,21 @@
       setTimeout(() => tooltip.remove(), 2500);
     };
 
+    // --- React/Workday safe value setter ---
+    const setNativeValue = (el, val) => {
+      const valueSetter = Object.getOwnPropertyDescriptor(el.__proto__, "value")?.set;
+      const prototype = Object.getPrototypeOf(el);
+      const prototypeValueSetter = Object.getOwnPropertyDescriptor(prototype, "value")?.set;
+
+      if (prototypeValueSetter && valueSetter !== prototypeValueSetter) {
+        prototypeValueSetter.call(el, val);
+      } else if (valueSetter) {
+        valueSetter.call(el, val);
+      } else {
+        el.value = val;
+      }
+    };
+
     if (element instanceof HTMLSelectElement) {
       const desired = normalizeCompact(value);
       const option = Array.from(element.options).find(
@@ -338,14 +353,20 @@
 
       if (!option) return false;
 
-      element.value = option.value;
-      dispatchFieldEvents(element);
+      setNativeValue(element, option.value);
+      element.dispatchEvent(new Event("input", { bubbles: true }));
+      element.dispatchEvent(new Event("change", { bubbles: true }));
+      element.dispatchEvent(new Event("blur", { bubbles: true }));
       highlightField(element, confidence);
       return true;
     }
 
-    element.value = value;
-    dispatchFieldEvents(element);
+    setNativeValue(element, value);
+
+    element.dispatchEvent(new Event("input", { bubbles: true }));
+    element.dispatchEvent(new Event("change", { bubbles: true }));
+    element.dispatchEvent(new Event("blur", { bubbles: true }));
+
     highlightField(element, confidence);
     return true;
   };
