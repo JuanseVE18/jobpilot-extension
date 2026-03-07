@@ -54,11 +54,27 @@
     },
 
     location: {
-      tokens: ["location", "city"],
-      strong: ["job location"],
-      weak: ["location"],
-      types: ["text"],
-      autocomplete: []
+      tokens: [
+        "location",
+        "city",
+        "address",
+        "region",
+        "state",
+        "country",
+        "job_location",
+        "work_location"
+      ],
+      strong: [
+        "job location",
+        "work location",
+        "city",
+        "state",
+        "country",
+        "address"
+      ],
+      weak: ["location", "area"],
+      types: ["text", "search"],
+      autocomplete: ["address-level2", "address-level1", "country-name" ]
     },
 
     startDate: {
@@ -236,7 +252,14 @@
           applyValue(field, exp.company, 10);
         }
 
-        if (name.includes("location") && exp.location) {
+        if (
+          (name.includes("location") ||
+           name.includes("city") ||
+           name.includes("address") ||
+           name.includes("region") ||
+           name.includes("state")) &&
+          exp.location
+        ) {
           applyValue(field, exp.location, 9);
         }
 
